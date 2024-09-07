@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Timestamp Microservice | freeCodeCamp.org</title>
+      <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png" type="image/x-icon"/>
+      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+      <link href="style.css" rel="stylesheet" type="text/css">
+   </head>
+
+   <body>
+    <h1>Timestamp Microservice</h1>
+    <hr />
+    <div class="container">
+      <h2>Example Usage:</h2>
+      <ul>
+        <li><a href="/api/2015-12-25">[project url]/api/2015-12-25</a></li>
+        <li><a href="/api/1451001600000">[project url]/api/1451001600000</a></li>
+      </ul>
+
+      <h2>Input a Date:</h2>
+      <form id="date-form">
+        <input type="text" id="date-input" placeholder="Enter a date or timestamp" />
+        <button type="submit">Submit</button>
+      </form>
+
+      <h2>Output:</h2>
+      <p id="result">
+        <code>{"unix": " ", "utc": " "}</code>
+      </p>
+    </div>
+    <div class="footer">
+      <p>
+        By <a href="https://www.freecodecamp.org/">freeCodeCamp.org</a>
+      </p>
+    </div>
+
+    <script>
+      document.getElementById('date-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const dateInput = document.getElementById('date-input').value;
+        fetch(`/api/${dateInput}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              document.getElementById('result').innerHTML = `<code>{"error": "${data.error}"}</code>`;
+            } else {
+              document.getElementById('result').innerHTML = `<code>{"unix": ${data.unix}, "utc": "${data.utc}"}</code>`;
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      });
+    </script>
+  </body>
+</html>
